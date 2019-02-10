@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:javagg="java://PatternValidation" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd" schemaLocation="/ValidationFileSchema.xsd"/>
+    <pd:name>MainProcessSample.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="InputString" type="xsd:string"/>
+                    <xsd:element name="ValidationFile" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>72</pd:startY>
+    <pd:returnBindings>
+        <ValidationDataOutput>
+            <xsl:for-each select="$Map-Data/root/DataElement[Result='Fail']">
+                <DataElement>
+                    <xsl:if test="Resultdata/ElementPath">
+                        <ElementPath>
+                            <xsl:value-of select="Resultdata/ElementPath"/>
+                        </ElementPath>
+                    </xsl:if>
+                    <xsl:if test="Resultdata/ValidationResult">
+                        <Validationresult>
+                            <xsl:value-of select="Resultdata/ValidationResult"/>
+                        </Validationresult>
+                    </xsl:if>
+                </DataElement>
+            </xsl:for-each>
+            <Status>
+                <xsl:value-of select="if(exists($Map-Data/root/DataElement[Result='Fail']))&#xA;then&#xA;false()&#xA;else&#xA;true()"/>
+            </Status>
+        </ValidationDataOutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="ValidationDataOutput">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="DataElement" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="ElementPath" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="Validationresult" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="suggestedErrorCode" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="Status" type="xsd:boolean" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>883</pd:endX>
+    <pd:endY>108</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1549201348265</pd:targetNamespace>
+    <pd:activity name="ParseDataValidation">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>427</pd:x>
+        <pd:y>36</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx:XMlDataValidation"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Start/root/ValidationFile"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Transform XML">
+        <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
+        <pd:x>216</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <engine>TibcoXML</engine>
+            <stylesheet>/XSLT File.xslt</stylesheet>
+        </config>
+        <pd:inputBindings>
+            <textInput>
+                <xmlString>
+                    <xsl:value-of select="$Start/root/InputString"/>
+                </xmlString>
+            </textInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>420</pd:x>
+        <pd:y>166</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:any processContents="skip"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Transform-XML/xmlString"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>669</pd:x>
+        <pd:y>105</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="DataElement" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Result" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="Name" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="ErrorCode" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="Resultdata" minOccurs="0">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="ElementPath" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="ValidationResult" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Value" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="DataTypeFlag" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="MandatoryFlag" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="MaxLengthFlag" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="EnumFlag" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="PatternFlag" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="MinLengthFlag" type="xsd:string" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:for-each select="$ParseDataValidation/pfx:XMlDataValidation/pfx:Record/pfx:DataElement">
+                    <xsl:variable name="currentDataElement" select="."/>
+                    <xsl:variable name="value" select="tib:evaluate($Parse-XML/*,current()/pfx:ElementPath)"/>
+                    <xsl:variable name="MandatoryFlag" select="if(current()/pfx:Mandatory='true')&#xA;&#x9;then&#xA; &#x9;if(string-length($value[1])>0)&#xA;   &#x9;&#x9;then &#xA;&#x9;&#x9;&#x9;true()&#xA;&#x9;else&#xA;&#x9;&#x9;false()&#xA;else&#xA;true()&#xA;&#xA;"/>
+                    <xsl:choose>
+                        <xsl:when test="$MandatoryFlag=false()">
+                            <DataElement>
+                                <Result>
+                                    <xsl:value-of select="false()"/>
+                                </Result>
+                                <Name>
+                                    <xsl:value-of select="current()/pfx:ElementPath"/>
+                                </Name>
+                                <ErrorCode>
+                                    <xsl:value-of select="'field required'"/>
+                                </ErrorCode>
+                                <Resultdata>
+                                    <ElementPath>
+                                        <xsl:value-of select="current()/pfx:ElementPath"/>
+                                    </ElementPath>
+                                    <ValidationResult>
+                                        <xsl:value-of select="'false'"/>
+                                    </ValidationResult>
+                                    <xsl:if test="$value[1]">
+                                        <Value>
+                                            <xsl:value-of select="$value[1]"/>
+                                        </Value>
+                                    </xsl:if>
+                                </Resultdata>
+                            </DataElement>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:for-each select="$value">
+                                <xsl:variable name="var" select="position()"/>
+                                <DataElement>
+                                    <xsl:variable name="patternflag" select="if(string-length($currentDataElement/pfx:Pattern)>0)&#xA;then&#xA;javagg:matchPattern($value[$var],$currentDataElement/pfx:Pattern)&#xA;else&#xA;true()"/>
+                                    <xsl:variable name="minLengthFlag" select="if(string-length($currentDataElement/pfx:MinLength)>0)&#xA;then&#xA;&#x9;string-length($value[$var]) >= $currentDataElement/pfx:MinLength&#xA;else&#xA;true()"/>
+                                    <xsl:variable name="maxLengthFlag" select="if(string-length($currentDataElement/pfx:MaxLength)>0)&#xA;then&#xA;&#x9;string-length($value[$var]) &lt;=$currentDataElement/pfx:MaxLength&#xA;else&#xA;true()"/>
+                                    <xsl:variable name="enumFlag" select="if(string-length($currentDataElement/pfx:Enum)>0)&#xA;then&#xA;string-length(tib:tokenize-allow-empty($currentDataElement/pfx:Enum,',')[.=$value[$var]])>0&#xA;else&#xA;true()"/>
+                                    <xsl:choose>
+                                        <xsl:when test="($patternflag ='true' ) and&#xA;($minLengthFlag= 'true')&#xA; and ($maxLengthFlag = 'true') and&#xA;($enumFlag='true')">
+                                            <Result>
+                                                <xsl:value-of select="'Success'"/>
+                                            </Result>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <Result>
+                                                <xsl:value-of select="'Fail'"/>
+                                            </Result>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <Name>
+                                        <xsl:value-of select="$currentDataElement/pfx:ElementPath"/>
+                                    </Name>
+                                    <Resultdata>
+                                        <ElementPath>
+                                            <xsl:value-of select="$currentDataElement/pfx:ElementPath"/>
+                                        </ElementPath>
+                                        <xsl:choose>
+                                            <xsl:when test="($patternflag ='true' ) and&#xA;($minLengthFlag= 'true')&#xA; and ($maxLengthFlag = 'true')&#xA;and ($enumFlag = 'true')">
+                                                <ValidationResult>
+                                                    <xsl:value-of select="'Success'"/>
+                                                </ValidationResult>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <ValidationResult>
+                                                    <xsl:value-of select="'Fail'"/>
+                                                </ValidationResult>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <xsl:if test="$value[$var]">
+                                            <Value>
+                                                <xsl:value-of select="$value[$var]"/>
+                                            </Value>
+                                        </xsl:if>
+                                        <MaxLengthFlag>
+                                            <xsl:value-of select="$maxLengthFlag"/>
+                                        </MaxLengthFlag>
+                                        <EnumFlag>
+                                            <xsl:value-of select="$enumFlag"/>
+                                        </EnumFlag>
+                                        <PatternFlag>
+                                            <xsl:value-of select="$patternflag"/>
+                                        </PatternFlag>
+                                        <MinLengthFlag>
+                                            <xsl:value-of select="$minLengthFlag"/>
+                                        </MinLengthFlag>
+                                    </Resultdata>
+                                </DataElement>
+                            </xsl:for-each>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Transform XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ParseDataValidation</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transform XML</pd:from>
+        <pd:to>ParseDataValidation</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transform XML</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Map Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

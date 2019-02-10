@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd2"
+	 targetNamespace="http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd2"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="Employees">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Employee" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EmpNo" type="xs:string" minOccurs="0"/>
+							<xs:element name="Empname" type="xs:string" minOccurs="0"/>
+							<xs:element name="Designation" type="xs:string" minOccurs="0"/>
+							<xs:element name="City" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

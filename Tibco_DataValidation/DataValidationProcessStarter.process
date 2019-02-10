@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd2">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd2" schemaLocation="/SampleSchemaToTest.xsd"/>
+    <pd:name>DataValidationProcessStarter.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:Employees"/>
+    <pd:startX>79</pd:startX>
+    <pd:startY>69</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>663</pd:endX>
+    <pd:endY>66</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1549202348018</pd:targetNamespace>
+    <pd:activity name="Call Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>351</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <processName>/MainProcessSample.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <InputString>
+                    <xsl:value-of select="tib:render-xml($Start/pfx:Employees)"/>
+                </InputString>
+                <ValidationFile>
+                    <xsl:value-of select="'&lt;?xml version = &quot;1.0&quot; encoding = &quot;UTF-8&quot;?>&#xA;&lt;ns0:XMlDataValidation xmlns:ns0 = &quot;http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd&quot;>&#xA;&#x9;&lt;ns0:Record>&#xA;&#x9;&#x9;&lt;ns0:Key>Sample&lt;/ns0:Key>&#xA;&#x9;&#x9;&lt;ns0:DataElement>&#xA;&#x9;&#x9;&#x9;&lt;ns0:ElementPath>/*/Employee/EmpNo&lt;/ns0:ElementPath>&#xA;&#x9;&#x9;&#x9;&lt;ns0:MinLength>1&lt;/ns0:MinLength>&#xA;&#x9;&#x9;&#x9;&lt;ns0:MaxLength>5&lt;/ns0:MaxLength>&#xA;&#x9;&#x9;&#x9;&lt;ns0:Enum>2,5,7&lt;/ns0:Enum>&#xA;&#x9;&#x9;&lt;/ns0:DataElement>&#xA;&#x9;&#x9;&lt;ns0:DataElement>&#xA;&#x9;&#x9;&#x9;&lt;ns0:ElementPath>/*/Employee/Empname&lt;/ns0:ElementPath>&#xA;&#x9;&#x9;&#x9;&lt;ns0:MinLength>2&lt;/ns0:MinLength>&#xA;&#x9;&#x9;&#x9;&lt;ns0:MaxLength>255&lt;/ns0:MaxLength>&#xA;&#x9;&#x9;&#x9;&lt;ns0:Pattern>^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,6}$&lt;/ns0:Pattern>&#xA;&#x9;&#x9;&lt;/ns0:DataElement>&#xA;&#x9;&lt;/ns0:Record>&#xA;&lt;/ns0:XMlDataValidation>'"/>
+                </ValidationFile>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Call Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Call Process</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>Label</pd:description>
+        <pd:x>155</pd:x>
+        <pd:y>209</pd:y>
+        <pd:width>41</pd:width>
+        <pd:height>8</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>Data to start the process:-&lt;?xml version = "1.0" encoding = "UTF-8"?&gt;
+&lt;Employees xmlns = "http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd2"&gt;
+	&lt;Employee&gt;
+		&lt;EmpNo&gt;2&lt;/EmpNo&gt;
+		&lt;Empname&gt;gaurav.garg9191@gmail.com&lt;/Empname&gt;
+	&lt;/Employee&gt;
+&lt;/Employees&gt;</pd:description>
+        <pd:x>309</pd:x>
+        <pd:y>204</pd:y>
+        <pd:width>599</pd:width>
+        <pd:height>164</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

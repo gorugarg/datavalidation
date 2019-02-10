@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:java-xpath xmlns:ns0="http://www.tibco.com/bw/javaxpath/2003">
+    <ns0:description>Its present in GIT</ns0:description>
+    <ns0:suggestedPrefix>javagg</ns0:suggestedPrefix>
+    <ns0:loadedFromLocation>C:\Users\ggarg\workspace_cloud1\JavaTrialJDBC.module\src\PatternValidation.class</ns0:loadedFromLocation>
+    <ns0:bytecode>yv66vgAAADMAHwoABgAPCgAQABEKABAAEgoAEwAUBwAVBwAWAQAGPGluaXQ+AQADKClWAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEADG1hdGNoUGF0dGVybgEAJyhMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspWgEAClNvdXJjZUZpbGUBABZQYXR0ZXJuVmFsaWRhdGlvbi5qYXZhDAAHAAgHABcMABgAGQwAGgAbBwAcDAAdAB4BABFQYXR0ZXJuVmFsaWRhdGlvbgEAEGphdmEvbGFuZy9PYmplY3QBABdqYXZhL3V0aWwvcmVnZXgvUGF0dGVybgEAB2NvbXBpbGUBAC0oTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL3V0aWwvcmVnZXgvUGF0dGVybjsBAAdtYXRjaGVyAQAzKExqYXZhL2xhbmcvQ2hhclNlcXVlbmNlOylMamF2YS91dGlsL3JlZ2V4L01hdGNoZXI7AQAXamF2YS91dGlsL3JlZ2V4L01hdGNoZXIBAAdtYXRjaGVzAQADKClaACEABQAGAAAAAAACAAEABwAIAAEACQAAAB0AAQABAAAABSq3AAGxAAAAAQAKAAAABgABAAAAAwAJAAsADAABAAkAAABIAAIABwAAABwqTStOLbgAAjoEGQQstgADOgUZBbYABDYGFQasAAAAAQAKAAAAGgAGAAAABwACAAkABAALAAoADQASAA4AGQAPAAEADQAAAAIADg==</ns0:bytecode>
+</ns0:java-xpath>
