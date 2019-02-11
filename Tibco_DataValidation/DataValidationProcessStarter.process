@@ -26,9 +26,9 @@
                 <InputString>
                     <xsl:value-of select="tib:render-xml($Start/pfx:Employees)"/>
                 </InputString>
-                <ValidationFile>
-                    <xsl:value-of select="'&lt;?xml version = &quot;1.0&quot; encoding = &quot;UTF-8&quot;?>&#xA;&lt;ns0:XMlDataValidation xmlns:ns0 = &quot;http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd&quot;>&#xA;&#x9;&lt;ns0:Record>&#xA;&#x9;&#x9;&lt;ns0:Key>Sample&lt;/ns0:Key>&#xA;&#x9;&#x9;&lt;ns0:DataElement>&#xA;&#x9;&#x9;&#x9;&lt;ns0:ElementPath>/*/Employee/EmpNo&lt;/ns0:ElementPath>&#xA;&#x9;&#x9;&#x9;&lt;ns0:MinLength>1&lt;/ns0:MinLength>&#xA;&#x9;&#x9;&#x9;&lt;ns0:MaxLength>5&lt;/ns0:MaxLength>&#xA;&#x9;&#x9;&#x9;&lt;ns0:Enum>2,5,7&lt;/ns0:Enum>&#xA;&#x9;&#x9;&lt;/ns0:DataElement>&#xA;&#x9;&#x9;&lt;ns0:DataElement>&#xA;&#x9;&#x9;&#x9;&lt;ns0:ElementPath>/*/Employee/Empname&lt;/ns0:ElementPath>&#xA;&#x9;&#x9;&#x9;&lt;ns0:MinLength>2&lt;/ns0:MinLength>&#xA;&#x9;&#x9;&#x9;&lt;ns0:MaxLength>255&lt;/ns0:MaxLength>&#xA;&#x9;&#x9;&#x9;&lt;ns0:Pattern>^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,6}$&lt;/ns0:Pattern>&#xA;&#x9;&#x9;&lt;/ns0:DataElement>&#xA;&#x9;&lt;/ns0:Record>&#xA;&lt;/ns0:XMlDataValidation>'"/>
-                </ValidationFile>
+                <RecordfKey>
+                    <xsl:value-of select="'Sample1'"/>
+                </RecordfKey>
             </root>
         </pd:inputBindings>
     </pd:activity>

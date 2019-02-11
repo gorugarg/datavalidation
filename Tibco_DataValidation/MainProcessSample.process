@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:javagg="java://PatternValidation" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="www.tibco.com/plugin/java/JavaMethodActivityOutput" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="www.tibco.com/plugin/java/JavaMethodActivityInput" xmlns:javagg="java://PatternValidation" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd">
     <xsd:import namespace="http://www.tibco.com/schemas/Tibco_DataValidation/Schema.xsd" schemaLocation="/ValidationFileSchema.xsd"/>
     <pd:name>MainProcessSample.process</pd:name>
     <pd:startName>Start</pd:startName>
@@ -8,7 +8,7 @@
             <xsd:complexType>
                 <xsd:sequence>
                     <xsd:element name="InputString" type="xsd:string"/>
-                    <xsd:element name="ValidationFile" type="xsd:string"/>
+                    <xsd:element name="RecordfKey" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
@@ -55,16 +55,16 @@
             </xsd:complexType>
         </xsd:element>
     </pd:endType>
-    <pd:endX>883</pd:endX>
-    <pd:endY>108</pd:endY>
+    <pd:endX>952</pd:endX>
+    <pd:endY>103</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1549201348265</pd:targetNamespace>
     <pd:activity name="ParseDataValidation">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>427</pd:x>
-        <pd:y>36</pd:y>
+        <pd:x>522</pd:x>
+        <pd:y>35</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -73,15 +73,15 @@
         </config>
         <pd:inputBindings>
             <xmlString>
-                <xsl:value-of select="$Start/root/ValidationFile"/>
+                <xsl:value-of select="$Java-Method/ns1:JavaMethodActivityOutput/MethodReturnValue"/>
             </xmlString>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Transform XML">
         <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
         <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
-        <pd:x>216</pd:x>
-        <pd:y>81</pd:y>
+        <pd:x>300</pd:x>
+        <pd:y>73</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <engine>TibcoXML</engine>
@@ -98,8 +98,8 @@
     <pd:activity name="Parse XML">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>420</pd:x>
-        <pd:y>166</pd:y>
+        <pd:x>533</pd:x>
+        <pd:y>165</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -117,8 +117,8 @@
     <pd:activity name="Map Data">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>669</pd:x>
-        <pd:y>105</pd:y>
+        <pd:x>749</pd:x>
+        <pd:y>108</pd:y>
         <config>
             <element>
                 <xsd:element name="root">
@@ -251,9 +251,37 @@
             </root>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Java Method">
+        <pd:type>com.tibco.plugin.java.JavaMethodActivity</pd:type>
+        <pd:resourceType>ae.activities.JavaMethodActivity</pd:resourceType>
+        <pd:x>170</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <ConstructDeclaredClass>false</ConstructDeclaredClass>
+            <CacheConstructedClass>false</CacheConstructedClass>
+            <InvokeCleanupMethod>false</InvokeCleanupMethod>
+            <MethodInfo>
+                <classLocation>c:/users/ggarg/workspace_cloud1/javatrialjdbc.module/src/datavalidation.jar</classLocation>
+                <classPath>/AliasLibrary.aliaslib</classPath>
+                <className>DataValidation</className>
+                <methodName>getValidationString</methodName>
+                <methodReturn>java.lang.String</methodReturn>
+                <methodParameter>java.lang.String</methodParameter>
+            </MethodInfo>
+        </config>
+        <pd:inputBindings>
+            <ns:JavaMethodActivityInput>
+                <MethodParameters>
+                    <Parameter1>
+                        <xsl:value-of select="$Start/root/RecordfKey"/>
+                    </Parameter1>
+                </MethodParameters>
+            </ns:JavaMethodActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
-        <pd:to>Transform XML</pd:to>
+        <pd:to>Java Method</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -289,6 +317,13 @@
     <pd:transition>
         <pd:from>Map Data</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Method</pd:from>
+        <pd:to>Transform XML</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
